@@ -1,0 +1,13 @@
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\bin\Debug\netcoreapp3.1\ConsoleAppAula1.exe
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\bin\Debug\netcoreapp3.1\ConsoleAppAula1.deps.json
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\bin\Debug\netcoreapp3.1\ConsoleAppAula1.runtimeconfig.json
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\bin\Debug\netcoreapp3.1\ConsoleAppAula1.runtimeconfig.dev.json
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\bin\Debug\netcoreapp3.1\ConsoleAppAula1.dll
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\bin\Debug\netcoreapp3.1\ConsoleAppAula1.pdb
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\obj\Debug\netcoreapp3.1\ConsoleAppAula1.csprojAssemblyReference.cache
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\obj\Debug\netcoreapp3.1\ConsoleAppAula1.AssemblyInfoInputs.cache
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\obj\Debug\netcoreapp3.1\ConsoleAppAula1.AssemblyInfo.cs
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\obj\Debug\netcoreapp3.1\ConsoleAppAula1.csproj.CoreCompileInputs.cache
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\obj\Debug\netcoreapp3.1\ConsoleAppAula1.dll
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\obj\Debug\netcoreapp3.1\ConsoleAppAula1.pdb
+C:\Particular\etec\2020 2º sem\DS-DS\ConsoleAppAula1\ConsoleAppAula1\obj\Debug\netcoreapp3.1\ConsoleAppAula1.genruntimeconfig.cache
