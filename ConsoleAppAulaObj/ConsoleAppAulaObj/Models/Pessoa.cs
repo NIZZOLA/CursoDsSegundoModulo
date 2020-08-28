@@ -6,7 +6,12 @@ namespace ConsoleAppAulaObj.Models
 {
     public class Pessoa
     {
-        public int PessoaId { get; set; }
+        public Pessoa()
+        {
+            EnderecoDeentrega = new Endereco();
+            EnderecoDeCobranca = new Endereco();
+        }
+        public int Id { get; set; }
 
         public string Nome { get; set; }
 
@@ -15,6 +20,29 @@ namespace ConsoleAppAulaObj.Models
         public DateTime Nascimento { get; set; }
 
         public char Sexo { get; set; }
+
+
+        public Endereco EnderecoDeentrega { get; set; }
+
+        public Endereco EnderecoDeCobranca { get; set; }
+
+
+        private int CalcularIdade()
+        {
+            var dias = DateTime.Today.Subtract(this.Nascimento).TotalDays;
+            return Convert.ToInt32(dias / 365);
+        }
+
+        public bool ValidarCadastro()
+        {
+            if (Nascimento > DateTime.Today)
+                return false;
+
+            if (Nome.Length > 5)
+                return false;
+
+            return true;
+        }
 
     }
 }
