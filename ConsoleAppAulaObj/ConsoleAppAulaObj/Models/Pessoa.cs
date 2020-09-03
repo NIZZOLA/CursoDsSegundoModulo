@@ -16,5 +16,10 @@ namespace ConsoleAppAulaObj.Models
 
         public char Sexo { get; set; }
 
+        public int Idade()
+        {
+            return DateTime.Now.Subtract(this.Nascimento).Hours / 365;
+        }
+
     }
 }
