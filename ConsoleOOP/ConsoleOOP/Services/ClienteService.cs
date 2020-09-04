@@ -7,81 +7,67 @@ namespace ConsoleOOP.Services
 {
     public class ClienteService
     {
-        public ClientePessoaFisica CadastrarFisica()
+        public Cliente CadastrarCliente(string tipo )
         {
-            ClientePessoaFisica cli = new ClientePessoaFisica();
-            Console.Write("Digite o nome do cliente:");
-            cli.Nome = Console.ReadLine();
+            Cliente cli;
+
+            if (tipo == "")
+            {
+                Console.WriteLine("Pessoa física ou jurídica (F/J) ?");
+                tipo = Console.ReadLine();
+            }
+
+            if (tipo == "F")
+                cli = this.CadastrarFisica();
+            else
+                cli = this.CadastrarJuridica();
 
             return cli;
         }
 
-        
-
-
-        public void Processar()
+        private ClientePessoaFisica CadastrarFisica()
         {
+            var cli = new ClientePessoaFisica();
+            Console.Write("Digite o nome do cliente:");
+            cli.Nome = Console.ReadLine();
 
-            var cli = new ClientePessoaFisica()
-            {
-                ClienteId = 1,
-                Cpf = "123456",
-                Nome = "JOSE DA SILVA",
-                Sexo = SexoEnum.Masculino
-            };
+            Console.Write("Digite o CPF:");
+            cli.Cpf = Console.ReadLine();
 
-            var empresa = new ClientePessoaJuridica()
-            {
-                ClienteId = 2,
-                CNPJ = "111111",
-                NomeFantasia = "ETEC ITU"
-            };
+            Console.Write("Data do nascimento:");
+            cli.DataDeNascimento = DateTime.Parse(Console.ReadLine());
 
-            var conta = new ContaBancaria()
-            {
-                Agencia = 1,
-                Conta = 345,
-                ContaBancariaId = 1,
-                DataDaAbertura = DateTime.Now,
-                Titular1 = cli
-            };
+            Console.Write("Digite o Sexo <M/F> :");
+            var sexo = Console.ReadLine();
 
-            var poupanca = new ContaPoupanca()
-            {
-                Agencia = 1,
-                Conta = 345,
-                ContaBancariaId = 1,
-                DataDaAbertura = DateTime.Now,
-                Titular1 = empresa,
-                DiaDeAniversario = 10
-            };
+            if (sexo.ToUpper() == "M")
+                cli.Sexo = SexoEnum.Masculino;
+            else
+                cli.Sexo = SexoEnum.Feminino;
 
-            ClientePessoaJuridica titular = (ClientePessoaJuridica)poupanca.Titular1;
-
-
-            string texto = $"\n Agencia {poupanca.Agencia} Conta: {poupanca.Conta} Titular: {titular.NomeFantasia} " +
-                           $" Razao social: { ((ClientePessoaJuridica)poupanca.Titular1).RazaoSocial} ";
-
-            Console.Write("Saldo inicial:" + poupanca.ConsultarSaldo());
-
-            poupanca.Depositar(1000);
-
-            poupanca.Sacar(300);
-            poupanca.Sacar(1.99m);
-            poupanca.Depositar(10);
-
-
-
-            foreach (var item in poupanca.Movimentacao)
-            {
-                Console.WriteLine($"| {item.Data} | {item.Tipo} | {item.Valor} |");
-            }
-
-            Console.Write("Saldo atual:" + poupanca.ConsultarSaldo());
-
-
+            return cli;
         }
 
+        private ClientePessoaJuridica CadastrarJuridica()
+        {
+            var cli = new ClientePessoaJuridica();
+            Console.Write("Digite o nome fantasia:");
+            cli.NomeFantasia = Console.ReadLine();
+
+            Console.Write("Razao Social:");
+            cli.RazaoSocial = Console.ReadLine();
+
+            Console.Write("CNPJ:");
+            cli.CNPJ = Console.ReadLine();
+
+            Console.Write("Inscrição estadual:");
+            cli.InscricaoEstadual = Console.ReadLine();
+
+            Console.Write("Data de fundação:");
+            cli.DataDaFundacao = DateTime.Parse(Console.ReadLine());
+
+            return cli;
+        }
 
     }
 }

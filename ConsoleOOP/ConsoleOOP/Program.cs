@@ -9,8 +9,10 @@ namespace ConsoleOOP
     {
         static void Main(string[] args)
         {
-            ClienteService servico = new ClienteService();
-            servico.Processar();
+
+            var mainService = new ServiceOrchestrator();
+            mainService.TelaPrincipal();
+            
 
         }
     }
