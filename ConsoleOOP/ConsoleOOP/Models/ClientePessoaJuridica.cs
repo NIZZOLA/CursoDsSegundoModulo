@@ -15,5 +15,10 @@ namespace ConsoleOOP.Models
 
         public DateTime DataDaFundacao { get; set; }
 
+        public override string ExibirDados()
+        {
+            return $"Nomefantasia: {this.NomeFantasia} Cpf: {this.CNPJ} Data da fundação {this.DataDaFundacao.ToString("dd/MM/yyyy")} ";
+        }
+
     }
 }

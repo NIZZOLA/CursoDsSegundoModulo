@@ -11,5 +11,11 @@ namespace ConsoleOOP.Models
         public DateTime DataDoCadastro { get; set; }
 
         public string Observacoes { get; set; }
+
+        public virtual string ExibirDados()
+        {
+            return "";
+        }
+        
     }
 }
