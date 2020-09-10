@@ -44,13 +44,19 @@ namespace ConsoleOOP
                         Contas.Add(conta);
                         break;
                     case 3:
+                        Depositar();
                         break;
                     case 4:
+                        Sacar();
                         break;
                     case 5:
+                        VerExtrato();
                         break;
                     case 6:
                         ListarClientes();
+                        break;
+                    case 7:
+                        ListarContas();
                         break;
                     case 0:
                         break;
@@ -59,6 +65,24 @@ namespace ConsoleOOP
                         break;
                 }
             } while (opcoes != 0);
+        }
+
+        public void Depositar()
+        {
+            var contaescolhida = _contaService.BuscarConta(Contas);
+            if (contaescolhida != null)
+                _contaService.Depositar(contaescolhida);
+            else
+                Console.WriteLine("Conta não encontrada !");
+        }
+
+        public void Sacar()
+        {
+            var contaescolhida = _contaService.BuscarConta(Contas);
+            if (contaescolhida != null)
+                _contaService.Sacar(contaescolhida);
+            else
+                Console.WriteLine("Conta não encontrada !");
         }
 
         public void ListarClientes()
@@ -74,6 +98,36 @@ namespace ConsoleOOP
             Console.ReadKey();
         }
 
+        public void ListarContas()
+        {
+            Console.Clear();
+            Console.WriteLine("Listagem de contas");
+
+            foreach (var conta in this.Contas)
+            {
+                Console.WriteLine(conta.ExibirDados()+ " Saldo:" + conta.ConsultarSaldo() );
+            }
+            Console.WriteLine("Pressione qualquer tecla !");
+            Console.ReadKey();
+        }
+
+        public void VerExtrato()
+        {
+            var contaescolhida = _contaService.BuscarConta(Contas);
+            if (contaescolhida != null)
+            {
+                Console.WriteLine("Extrato da conta:" + contaescolhida.ExibirDados());
+                foreach (var item in contaescolhida.Movimentacao)
+                {
+                    Console.WriteLine($"| {item.Data} | {item.Tipo} | {item.Valor} |");
+                }
+                Console.WriteLine("Saldo atual:" + contaescolhida.ConsultarSaldo());
+            }
+            else
+                Console.WriteLine("Conta não encontrada !");
+            
+            Console.ReadKey();
+        }
 
 
         /*

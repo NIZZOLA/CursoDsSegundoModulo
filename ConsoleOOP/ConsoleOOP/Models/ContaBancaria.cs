@@ -46,5 +46,10 @@ namespace ConsoleOOP.Models
 
         public List<MovimentacaoDaConta> Movimentacao { get; }
 
+        public virtual string ExibirDados()
+        {
+            return $"Agencia: {this.Agencia} Conta: {this.Conta} ";
+        }
+
     }
 }
