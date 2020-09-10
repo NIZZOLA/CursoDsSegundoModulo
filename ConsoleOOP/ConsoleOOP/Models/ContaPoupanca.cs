@@ -22,5 +22,10 @@ namespace ConsoleOOP.Models
             return false;
 
         }
+
+        public override string ExibirDados()
+        {
+            return $"Agencia: {this.Agencia} Conta Poupança: {this.Conta} ";
+        }
     }
 }
