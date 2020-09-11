@@ -19,8 +19,9 @@ namespace ConsoleOOP
             _clienteService = new ClienteService();
             _contaService = new ContaBancariaService();
 
-            Clientes = new List<Cliente>();
+            Clientes = _clienteService.CarregarArquivo();
             Contas = new List<ContaBancaria>();
+
         }
 
         public void TelaPrincipal()

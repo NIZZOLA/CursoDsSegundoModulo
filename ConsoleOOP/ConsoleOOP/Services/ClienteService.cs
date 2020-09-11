@@ -1,6 +1,8 @@
 ﻿using ConsoleOOP.Models;
+using ConsoleOOP.Repositoryes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ConsoleOOP.Services
@@ -21,6 +23,9 @@ namespace ConsoleOOP.Services
                 cli = this.CadastrarFisica();
             else
                 cli = this.CadastrarJuridica();
+
+            cli.DataDoCadastro = DateTime.Now;
+            FileRepository.Gravar("clientes.data", cli.PrepararDados() );
 
             return cli;
         }
@@ -67,6 +72,84 @@ namespace ConsoleOOP.Services
             cli.DataDaFundacao = DateTime.Parse(Console.ReadLine());
 
             return cli;
+        }
+
+        /* antes de otimizar o método
+        public List<Cliente> CarregarArquivo()
+        {
+            // Prepara uma lista vazia de clientes para devolver preenchida
+            List<Cliente> clientes = new List<Cliente>();
+
+            // chama a classe estatica de leitura e recebe uma lista de strings
+            var retorno = FileRepository.Ler("clientes.data");
+
+            if( retorno.Any() ) // verifica se houve algum item no retorno
+            {
+                foreach (var linha in retorno) // percorre os itens do retorno e cria a variavel string linha
+                {
+                    var itensLinha = linha.Split(";"); //faz um array com o string Linha onde separa cada elemento por um ; 
+                    if(itensLinha[0]== "F")
+                    {
+                        var cli = new ClientePessoaFisica();
+                        cli.ClienteId = Convert.ToInt32(itensLinha[1]);
+                        cli.Cpf = itensLinha[5];
+                        cli.DataDeNascimento = DateTime.Parse(itensLinha[6]);
+                        cli.DataDoCadastro = DateTime.Parse(itensLinha[2]);
+                        cli.Nome = itensLinha[4];
+                        cli.Observacoes = itensLinha[3];
+                        //cli.Sexo = (SexoEnum)itensLinha[7];
+                        clientes.Add(cli);
+                    }
+                    else
+                    {
+                        var clij = new ClientePessoaJuridica()
+                        {
+                            ClienteId = Convert.ToInt32(itensLinha[1]),
+                            CNPJ = itensLinha[6],
+                            DataDaFundacao = DateTime.Parse(itensLinha[6]),
+                            DataDoCadastro = DateTime.Parse(itensLinha[2]),
+                            InscricaoEstadual = itensLinha[7],
+                            NomeFantasia = itensLinha[4],
+                            Observacoes = itensLinha[3],
+                            RazaoSocial = itensLinha[5]
+                        };
+                        clientes.Add(clij);
+                    }
+
+                }
+            }
+            return clientes;
+        }
+        */
+
+        public List<Cliente> CarregarArquivo()
+        {
+            // Prepara uma lista vazia de clientes para devolver preenchida
+            List<Cliente> clientes = new List<Cliente>();
+
+            // chama a classe estatica de leitura e recebe uma lista de strings
+            var retorno = FileRepository.Ler("clientes.data");
+
+            if (retorno.Any()) // verifica se houve algum item no retorno
+            {
+                foreach (var linha in retorno) // percorre os itens do retorno e cria a variavel string linha
+                {
+                    var itensLinha = linha.Split(";"); //faz um array com o string Linha onde separa cada elemento por um ; 
+                    if (itensLinha[0] == "F")
+                    {
+                        var cli = new ClientePessoaFisica();
+                        cli.CarregarDados(itensLinha);
+                        clientes.Add(cli);
+                    }
+                    else
+                    {
+                        var clij = new ClientePessoaJuridica();
+                        clij.CarregarDados(itensLinha);
+                        clientes.Add(clij);
+                    }
+                }
+            }
+            return clientes;
         }
 
     }

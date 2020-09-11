@@ -16,6 +16,15 @@ namespace ConsoleOOP.Models
         {
             return "";
         }
-        
+
+        public virtual string PrepararDados()
+        {
+            return "";
+        }
+
+        public virtual void CarregarDados(string[] itensLinha)
+        {
+
+        }
     }
 }

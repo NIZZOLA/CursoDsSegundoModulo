@@ -16,3 +16,9 @@ Referências
 
 Continuação dos conceitos de OOP e implementação de classes para serviços e orquestração.
 
+
+
+
+# Aula do dia 11/09/2020 - aula7
+
+Exemplos de leitura e gravação de arquivos texto, com carregamento da classe utilizando método split.
