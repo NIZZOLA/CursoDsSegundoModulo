@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace ConsoleOOP.Models
 {
@@ -34,5 +35,7 @@ namespace ConsoleOOP.Models
             this.Observacoes = itensLinha[3];
             //this.Sexo = (SexoEnum)itensLinha[7];
         }
+
+        
     }
 }
