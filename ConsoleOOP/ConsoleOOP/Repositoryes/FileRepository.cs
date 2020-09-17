@@ -16,8 +16,26 @@ namespace ConsoleOOP.Repositoryes
             }
         }
 
+        public static string LerJson(string nomeDoArquivo)
+        {
+            if (!File.Exists(nomeDoArquivo))
+                return null;
+
+            string retorno = "";
+            using (var reader = new StreamReader(nomeDoArquivo))
+            {
+                retorno += reader.ReadLine();
+            }
+
+            return retorno;
+
+        }
+
         public static List<string> Ler( string nomeDoArquivo)
         {
+            if (!File.Exists(nomeDoArquivo))
+                return null;
+
             // foi criada uma lista de strings vazia
             List<string> retorno = new List<string>();
             try

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 
 namespace ConsoleOOP.Services
 {
@@ -19,12 +20,12 @@ namespace ConsoleOOP.Services
                 tipo = Console.ReadLine();
             }
 
-            if (tipo == "F")
+            
+            if (tipo.ToUpper() == "F")
                 cli = this.CadastrarFisica();
             else
                 cli = this.CadastrarJuridica();
 
-            cli.DataDoCadastro = DateTime.Now;
             FileRepository.Gravar("clientes.data", cli.PrepararDados() );
 
             return cli;
@@ -49,6 +50,10 @@ namespace ConsoleOOP.Services
                 cli.Sexo = SexoEnum.Masculino;
             else
                 cli.Sexo = SexoEnum.Feminino;
+
+            cli.DataDoCadastro = DateTime.Now;
+
+            FileRepository.Gravar("cliente" + cli.Cpf + ".json", JsonSerializer.Serialize(cli));
 
             return cli;
         }
@@ -130,7 +135,7 @@ namespace ConsoleOOP.Services
             // chama a classe estatica de leitura e recebe uma lista de strings
             var retorno = FileRepository.Ler("clientes.data");
 
-            if (retorno.Any()) // verifica se houve algum item no retorno
+            if (retorno != null && retorno.Any()) // verifica se houve algum item no retorno
             {
                 foreach (var linha in retorno) // percorre os itens do retorno e cria a variavel string linha
                 {

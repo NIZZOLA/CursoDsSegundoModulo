@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace ConsoleOOP.Models
 {
@@ -25,6 +26,18 @@ namespace ConsoleOOP.Models
         public virtual void CarregarDados(string[] itensLinha)
         {
 
+        }
+
+        public string ToJson()
+        {
+            if( this.GetType() == typeof(ClientePessoaFisica)  )
+            {
+                return JsonSerializer.Serialize((ClientePessoaFisica)this);
+            }
+            else
+            {
+                return JsonSerializer.Serialize((ClientePessoaJuridica)this);
+            }
         }
     }
 }

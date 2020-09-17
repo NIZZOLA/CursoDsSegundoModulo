@@ -36,5 +36,7 @@ namespace ConsoleOOP.Models
             this.Observacoes = itensLinha[3];
             this.RazaoSocial = itensLinha[5];
         }
+
+        
     }
 }
