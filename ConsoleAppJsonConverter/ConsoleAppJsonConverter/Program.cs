@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text.Json;
 
 namespace ConsoleAppJsonConverter
@@ -24,7 +25,24 @@ namespace ConsoleAppJsonConverter
             // transformar em Json
             var jsonString = JsonSerializer.Serialize(cli1);
 
+            // gravando no arquivo
+            using (StreamWriter file = new StreamWriter("meujson.json", true))
+            {
+                file.WriteLine(jsonString);
+                file.Close();
+            }
+
             string jsonString2 = "{ \"ClienteId\": 2, \"Nome\": \"PEDRO HENRIQUE GABRIEL DIAS CORREIA\",\"Cpf\": \"444.888.333-44\",\"DataDeNascimento\": \"1995-06-01T00:00:00\",	\"Ativo\": false  }";
+
+            // ler arquivo json
+            string retorno = "";
+            using (var reader = new StreamReader("meujson.json"))
+            {
+                retorno += reader.ReadLine();
+            }
+
+            var cli3 = JsonSerializer.Deserialize<Cliente>(retorno);
+
 
             var cli2 = JsonSerializer.Deserialize<Cliente>(jsonString2);
 
