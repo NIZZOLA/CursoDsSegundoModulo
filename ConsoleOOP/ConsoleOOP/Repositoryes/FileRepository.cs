@@ -7,9 +7,9 @@ namespace ConsoleOOP.Repositoryes
 {
     public static class FileRepository
     {
-        public static void Gravar(string nomeDoArquivo, string dados )
+        public static void Gravar(string nomeDoArquivo, string dados, bool complementarArquivo = true)
         {
-            using (StreamWriter file = new StreamWriter(nomeDoArquivo, true))
+            using (StreamWriter file = new StreamWriter(nomeDoArquivo, complementarArquivo))
             {
                 file.WriteLine(dados);
                 file.Close();
@@ -56,9 +56,6 @@ namespace ConsoleOOP.Repositoryes
                 Console.WriteLine("Houve erro na abertura do seu arquivo !" + erro.Message.ToString());
                 return null;
             }
-
         }
-
-
     }
 }
