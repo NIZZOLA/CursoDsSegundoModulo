@@ -21,7 +21,8 @@ namespace ConsoleOOP
             _clienteService = new ClienteService();
             _contaService = new ContaBancariaService();
 
-            Clientes = _clienteService.CarregarArquivo();
+            //Clientes = _clienteService.CarregarArquivoTexto();
+            Clientes = _clienteService.CarregarJson();
             Contas = new List<ContaBancaria>();
 
         }
@@ -40,10 +41,8 @@ namespace ConsoleOOP
                 {
                     case 1:
                         var cli = _clienteService.CadastrarCliente("");
-                        Console.WriteLine( cli.GetType() );
-                        Console.WriteLine(cli.ToJson());
-                        Console.ReadKey();
                         Clientes.Add(cli);
+                        _clienteService.GravarJson(Clientes);
                         break;
                     case 2:
                         var conta = _contaService.CadastrarConta();

@@ -1,7 +1,9 @@
 ﻿using ConsoleOOP.Models;
 using ConsoleOOP.Repositoryes;
+using ConsoleOOP.Validators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -19,7 +21,6 @@ namespace ConsoleOOP.Services
                 Console.WriteLine("Pessoa física ou jurídica (F/J) ?");
                 tipo = Console.ReadLine();
             }
-
             
             if (tipo.ToUpper() == "F")
                 cli = this.CadastrarFisica();
@@ -33,25 +34,43 @@ namespace ConsoleOOP.Services
 
         private ClientePessoaFisica CadastrarFisica()
         {
+            var validador = new ClientePessoaFisicaValidator();
             var cli = new ClientePessoaFisica();
-            Console.Write("Digite o nome do cliente:");
-            cli.Nome = Console.ReadLine();
+            List<string> validationResult;
 
-            Console.Write("Digite o CPF:");
-            cli.Cpf = Console.ReadLine();
+            do
+            {
 
-            Console.Write("Data do nascimento:");
-            cli.DataDeNascimento = DateTime.Parse(Console.ReadLine());
+                Console.Write("Digite o nome do cliente:");
+                cli.Nome = Console.ReadLine();
 
-            Console.Write("Digite o Sexo <M/F> :");
-            var sexo = Console.ReadLine();
+                Console.Write("Digite o CPF:");
+                cli.Cpf = Console.ReadLine();
 
-            if (sexo.ToUpper() == "M")
-                cli.Sexo = SexoEnum.Masculino;
-            else
-                cli.Sexo = SexoEnum.Feminino;
+                Console.Write("Data do nascimento:");
+                cli.DataDeNascimento = DateTime.Parse(Console.ReadLine());
 
-            cli.DataDoCadastro = DateTime.Now;
+                Console.Write("Digite o Sexo <M/F> :");
+                var sexo = Console.ReadLine();
+
+                if (sexo.ToUpper() == "M")
+                    cli.Sexo = SexoEnum.Masculino;
+                else
+                    cli.Sexo = SexoEnum.Feminino;
+
+                cli.DataDoCadastro = DateTime.Now;
+
+                validationResult = validador.IsValid(cli);
+                if( validationResult.Any() )
+                {
+                    Console.WriteLine("Houveram erros de validação!");
+                    foreach (var item in validationResult)
+                    {
+                        Console.WriteLine(item);
+                    }
+                }
+
+            } while (validationResult.Any());
 
             FileRepository.Gravar("cliente" + cli.Cpf + ".json", JsonSerializer.Serialize(cli));
 
@@ -127,7 +146,7 @@ namespace ConsoleOOP.Services
         }
         */
 
-        public List<Cliente> CarregarArquivo()
+        public List<Cliente> CarregarArquivoTexto()
         {
             // Prepara uma lista vazia de clientes para devolver preenchida
             List<Cliente> clientes = new List<Cliente>();
@@ -155,6 +174,44 @@ namespace ConsoleOOP.Services
                 }
             }
             return clientes;
+        }
+
+        public List<Cliente> CarregarJson()
+        {
+            var pessoaFisicaJsonTexto = FileRepository.LerJson("clientesPf.json");
+            var pessoasFisicas = JsonSerializer.Deserialize<List<ClientePessoaFisica>>(pessoaFisicaJsonTexto);
+
+            var pessoaJuridicaJsonTexto = FileRepository.LerJson("clientesPj.json");
+            var pessoasJuridicas = JsonSerializer.Deserialize<List<ClientePessoaJuridica>>(pessoaJuridicaJsonTexto);
+
+            List<Cliente> retorno = new List<Cliente>();
+            retorno.AddRange(pessoasJuridicas);
+            retorno.AddRange(pessoasFisicas);
+
+            return retorno;
+        }
+
+        public void GravarJson( List<Cliente> clientes )
+        {
+            List<ClientePessoaFisica> listaFisica = new List<ClientePessoaFisica>();
+            List<ClientePessoaJuridica> listaJuridica = new List<ClientePessoaJuridica>();
+
+            foreach (var cliente in clientes)
+            {
+                if (cliente.GetType() == typeof(ClientePessoaFisica))
+                {
+                    listaFisica.Add((ClientePessoaFisica)cliente);
+                }
+                else
+                {
+                    listaJuridica.Add((ClientePessoaJuridica)cliente);
+                }
+            }
+
+            var clientesFisicaJson = JsonSerializer.Serialize(listaFisica);
+            FileRepository.Gravar("clientesPf.json", clientesFisicaJson, false);
+
+            FileRepository.Gravar("clientesPj.json", JsonSerializer.Serialize(listaJuridica), false);
         }
 
     }
