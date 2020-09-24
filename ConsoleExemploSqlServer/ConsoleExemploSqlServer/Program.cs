@@ -11,7 +11,7 @@ namespace ConsoleExemploSqlServer
     {
         static void Main(string[] args)
         {
-            var connectionString = "Data Source=localhost,1433;Initial Catalog=ETEC2020;Persist Security Info=True;User ID=sa;Password=5m4rTPm#20#";
+            var connectionString = "Data Source=localhost,1433;Initial Catalog=ETEC2020;Persist Security Info=True;User ID=sa;Password=#20#";
 
             //Inclusao(connectionString);
             //Listagem(connectionString);
