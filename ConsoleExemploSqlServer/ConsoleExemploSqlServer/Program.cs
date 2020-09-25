@@ -11,13 +11,27 @@ namespace ConsoleExemploSqlServer
     {
         static void Main(string[] args)
         {
-            var connectionString = "Data Source=localhost,1433;Initial Catalog=ETEC2020;Persist Security Info=True;User ID=sa;Password=#20#";
+            var connectionString = "Data Source=localhost,1433;Initial Catalog=ETEC2020;Persist Security Info=True;User ID=sa;Password=5m4rTPm#20#";
 
             //Inclusao(connectionString);
             //Listagem(connectionString);
 
             ClienteRepository cliRepo = new ClienteRepository(connectionString);
 
+            //TestaInclusao(connectionString);
+            //TestaExclusao(connectionString);
+            //TestaConsultaEAlteracao(connectionString);
+
+            var lista = cliRepo.ConsultarTodos();
+
+
+            
+
+        }
+
+        static void TestaInclusao(string connectionString)
+        {
+            ClienteRepository cliRepo = new ClienteRepository(connectionString);
             ClienteModel cli = new ClienteModel()
             {
                 Codigo = 2,
@@ -31,8 +45,32 @@ namespace ConsoleExemploSqlServer
                 Console.WriteLine("Sucesso na inclusão!");
             else
                 Console.WriteLine("Erro !");
+        }
 
+        static void TestaExclusao(string connectionString)
+        {
+            ClienteRepository cliRepo = new ClienteRepository(connectionString);
 
+            if (cliRepo.Excluir(3))
+                Console.WriteLine("Sucesso na exclusão !");
+            else
+                Console.WriteLine("Erro !");
+        }
+
+        static void TestaConsultaEAlteracao(string connectionString)
+        {
+            ClienteRepository cliRepo = new ClienteRepository(connectionString);
+            var cli = cliRepo.Consultar(1);
+
+            Console.WriteLine("Nome:" + cli.Nome + " Telefone:" + cli.Telefone);
+            Console.Write("Atualize o telefone:");
+            var fone = Console.ReadLine();
+
+            cli.Telefone = fone;
+            if (cliRepo.Alterar(cli))
+                Console.WriteLine("Sucesso na alteração !");
+            else
+                Console.WriteLine("Erro !");
         }
 
         static void Listagem(string connectionString)
@@ -53,10 +91,9 @@ namespace ConsoleExemploSqlServer
                 {
                     var cli = new ClienteModel();
                     cli.Codigo = Convert.ToInt32(reader[0].ToString());
-                    cli.Nome = reader[1].ToString();
-                    Console.WriteLine(cli.Nome);
-                    cli.Email = reader[2].ToString();
-                    cli.Telefone = reader[3].ToString();
+                    cli.Nome = reader["nome"].ToString();
+                    cli.Email = reader["email"].ToString();
+                    cli.Telefone = reader["telefone"].ToString();
 
                     clientes.Add(cli);
                 }
