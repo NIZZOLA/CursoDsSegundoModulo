@@ -37,7 +37,7 @@ namespace ConsoleEFMysql
             Console.WriteLine("Ultimo cliente:" + clientes.LastOrDefault().Nome);
 
             Console.WriteLine("Cliente 10 :" + clientes.Where(x => x.ClienteId == 10).FirstOrDefault().Nome);
-            Console.WriteLine("Cliente por nome :" + clientes.Where(x => x.Nome == "Samuel Prince").FirstOrDefault().Nome);
+            Console.WriteLine("Cliente por nome :" + clientes.Where(x => x.Nome == "Samuel Prince" || x.Nome == "Kayky" ).FirstOrDefault().Nome);
 
             foreach (var item in clientes)
             {
