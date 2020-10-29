@@ -48,8 +48,12 @@ namespace MVCVendasApp.Controllers
         // GET: Venda/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.ClienteModel, "ClienteId", "ClienteId");
-            return View();
+            ViewData["ClienteId"] = new SelectList(_context.ClienteModel.ToList().OrderBy(a => a.Nome), "ClienteId", "Nome");
+            ViewData["Mensagem"] = "As compras devem ser pagas antes de serem entregues";
+            var venda = new VendaModel();
+            venda.DataDaVenda = DateTime.Today;
+            venda.DataPrevistaDaEntrega = DateTime.Today.AddDays(1);
+            return View(venda);
         }
 
         // POST: Venda/Create

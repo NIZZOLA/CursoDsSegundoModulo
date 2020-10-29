@@ -21,7 +21,7 @@ namespace MVCVendasApp.Models
         [ForeignKey("Produto")]
         public int ProdutoId { get; set; }
 
-        public ProdutoModel Livro { get; set; }
+        public ProdutoModel Produto { get; set; }
 
         public int Quantidade { get; set; }
 

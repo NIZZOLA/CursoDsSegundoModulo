@@ -22,7 +22,7 @@ namespace MVCVendasApp.Controllers
         // GET: VendaItens
         public async Task<IActionResult> Index()
         {
-            var mVCVendasAppContext = _context.VendaItensModel.Include(v => v.Venda);
+            var mVCVendasAppContext = _context.VendaItensModel.Include(v => v.Produto).Include(v => v.Venda);
             return View(await mVCVendasAppContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace MVCVendasApp.Controllers
             }
 
             var vendaItensModel = await _context.VendaItensModel
+                .Include(v => v.Produto)
                 .Include(v => v.Venda)
                 .FirstOrDefaultAsync(m => m.VendaItensId == id);
             if (vendaItensModel == null)
@@ -48,6 +49,7 @@ namespace MVCVendasApp.Controllers
         // GET: VendaItens/Create
         public IActionResult Create()
         {
+            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id");
             ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId");
             return View();
         }
@@ -65,6 +67,7 @@ namespace MVCVendasApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
             ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
             return View(vendaItensModel);
         }
@@ -82,6 +85,7 @@ namespace MVCVendasApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
             ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
             return View(vendaItensModel);
         }
@@ -118,6 +122,7 @@ namespace MVCVendasApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
             ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
             return View(vendaItensModel);
         }
@@ -131,6 +136,7 @@ namespace MVCVendasApp.Controllers
             }
 
             var vendaItensModel = await _context.VendaItensModel
+                .Include(v => v.Produto)
                 .Include(v => v.Venda)
                 .FirstOrDefaultAsync(m => m.VendaItensId == id);
             if (vendaItensModel == null)

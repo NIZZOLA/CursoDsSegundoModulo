@@ -70,7 +70,8 @@ namespace MVCVendasApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("PageNotFoundError", "Home");
+                //return NotFound();
             }
 
             var produtoModel = await _context.ProdutoModel.FindAsync(id);
@@ -90,7 +91,8 @@ namespace MVCVendasApp.Controllers
         {
             if (id != produtoModel.Id)
             {
-                return NotFound();
+                //return NotFound();
+                return RedirectToAction("PageNotFoundError", "Home");
             }
 
             if (ModelState.IsValid)
