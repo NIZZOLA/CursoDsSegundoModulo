@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalhes da Venda</h1>
 
 <div>
-    <h4>VendaModel</h4>
+    <h4></h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -19,8 +19,8 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Cliente)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cliente.ClienteId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.ClienteId) - @Html.DisplayFor(model => model.Cliente.Nome)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DataPrevistaDaEntrega)
@@ -35,6 +35,84 @@
             @Html.DisplayFor(model => model.CodigoDoRastreamento)
         </dd>
     </dl>
+
+    <div class="row">
+        <table class="table">
+
+            <a href="/VendaItens/Create/@Model.VendaId" value="Incluir" class="btn btn-primary" />Incluir</a>
+
+            <thead>
+                <tr>
+                    <th>
+                        Cod.Produto
+                    </th>
+                    <th>
+                        Descrição
+                    </th>
+                    <th>
+                        Unidade
+                    </th>
+                    <th>
+                        Quantidade
+                    </th>
+                    <th>
+                        Valor Unitário
+                    </th>
+                    <th>
+                        Valor total do Item
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Itens)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produto.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produto.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Produto.Unidade)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValorDeVenda)
+                        </td>
+                        <td>
+                            @(item.Quantidade * item.ValorDeVenda)
+                        </td>
+                        <td>
+                            <a asp-controller="VendaItens" asp-action="Edit" asp-route-id="@item.VendaItensId">Editar</a> |
+                            <!--    <a asp-action="Details" asp-route-id="@item.VendaItensId">Details</a> |-->
+                            <a asp-controller="VendaItens" asp-action="Delete" asp-route-id="@item.VendaItensId">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            
+            
+                <th>
+                    <td colspan="5">
+                        Total da venda
+                    </td>
+                    <td>
+                        @Model.Itens.Sum(a => a.ValorDeVenda * a.Quantidade)
+                    </td>
+                </th>
+
+            
+            
+            </tbody>
+        </table>
+
+
+    </div>
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.VendaId">Edit</a> |

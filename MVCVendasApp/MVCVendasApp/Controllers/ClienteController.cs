@@ -58,6 +58,9 @@ namespace MVCVendasApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                clienteModel.Nome = clienteModel.Nome.ToUpper().Trim();
+                if( clienteModel.Email != null)
+                   clienteModel.Email = clienteModel.Email.ToLower();
                 _context.Add(clienteModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
