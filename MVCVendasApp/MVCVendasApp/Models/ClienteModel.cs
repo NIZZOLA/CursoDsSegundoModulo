@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExemploMvcComMysql.Models
+namespace MVCVendasApp.Models
 {
     [Table("Clientes")]
     public class ClienteModel
