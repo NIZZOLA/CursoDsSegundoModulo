@@ -46,12 +46,14 @@ namespace MVCVendasApp.Controllers
             return View(vendaItensModel);
         }
 
-        // GET: VendaItens/Create
-        public IActionResult Create()
+        // GET: VendaItens/Create/VendaId
+        public IActionResult Create(int id)
         {
-            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id");
-            ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId");
-            return View();
+            VendaItensModel vdm = new VendaItensModel() { VendaId = id };
+
+            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Descricao");
+            //ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId");
+            return View(vdm);
         }
 
         // POST: VendaItens/Create
@@ -63,12 +65,13 @@ namespace MVCVendasApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 _context.Add(vendaItensModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("DetaiLs", "Venda", new { id = vendaItensModel.VendaId } );
             }
             ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
-            ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
+            //ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
             return View(vendaItensModel);
         }
 
@@ -120,7 +123,7 @@ namespace MVCVendasApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Venda", new { id = vendaItensModel.VendaId });
             }
             ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
             ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
@@ -155,7 +158,7 @@ namespace MVCVendasApp.Controllers
             var vendaItensModel = await _context.VendaItensModel.FindAsync(id);
             _context.VendaItensModel.Remove(vendaItensModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Venda", new { id = vendaItensModel.VendaId });
         }
 
         private bool VendaItensModelExists(int id)

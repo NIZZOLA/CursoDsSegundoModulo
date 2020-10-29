@@ -37,6 +37,12 @@ namespace MVCVendasApp.Controllers
             var vendaModel = await _context.VendaModel
                 .Include(v => v.Cliente)
                 .FirstOrDefaultAsync(m => m.VendaId == id);
+
+            vendaModel.Itens = await _context.VendaItensModel.
+                                                Include(v => v.Produto)
+                                                .Where(b => b.VendaId == id)
+                                                .ToListAsync();
+
             if (vendaModel == null)
             {
                 return NotFound();
