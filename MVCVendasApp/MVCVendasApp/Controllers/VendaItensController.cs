@@ -65,14 +65,44 @@ namespace MVCVendasApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-                _context.Add(vendaItensModel);
-                await _context.SaveChangesAsync();
+                if( ! ValidaEstoque(vendaItensModel) )
+                {
+                    return View(vendaItensModel);
+                }
+
+                SalvarItemVendido(vendaItensModel);
+
                 return RedirectToAction("DetaiLs", "Venda", new { id = vendaItensModel.VendaId } );
             }
             ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
             //ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
             return View(vendaItensModel);
+        }
+
+        public bool ValidaEstoque(VendaItensModel model )
+        {
+            var produto = _context.ProdutoModel.Find(model.ProdutoId);
+            if (produto == null)
+                return false;
+
+            if (produto.Estoque < model.Quantidade)
+                return false;
+
+            return true;
+        }
+
+        public void SalvarItemVendido(VendaItensModel model )
+        {
+            _context.Add(model);
+            BaixarEstoque(model.ProdutoId, model.Quantidade);
+            _context.SaveChangesAsync();
+        }
+
+        public void BaixarEstoque( int produtoId, int quantidade )
+        {
+            var produto = _context.ProdutoModel.Find(produtoId);
+            produto.Estoque = produto.Estoque - quantidade;
+            _context.Update(produto);
         }
 
         // GET: VendaItens/Edit/5
@@ -109,7 +139,15 @@ namespace MVCVendasApp.Controllers
             {
                 try
                 {
-                    _context.Update(vendaItensModel);
+                    var anterior = _context.VendaItensModel.Find(vendaItensModel.VendaItensId);
+                    var diferenca =  vendaItensModel.Quantidade - anterior.Quantidade;
+                    
+                    BaixarEstoque(vendaItensModel.ProdutoId, diferenca);
+
+                    anterior.Quantidade = vendaItensModel.Quantidade;
+                    anterior.ValorDeVenda = vendaItensModel.ValorDeVenda;
+                    
+                    _context.Update(anterior);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -156,6 +194,7 @@ namespace MVCVendasApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var vendaItensModel = await _context.VendaItensModel.FindAsync(id);
+            BaixarEstoque(vendaItensModel.ProdutoId, -vendaItensModel.Quantidade);
             _context.VendaItensModel.Remove(vendaItensModel);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "Venda", new { id = vendaItensModel.VendaId });

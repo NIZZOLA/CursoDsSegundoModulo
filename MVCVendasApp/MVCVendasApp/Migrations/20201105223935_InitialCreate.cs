@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVCVendasApp.Migrations
@@ -12,7 +13,7 @@ namespace MVCVendasApp.Migrations
                 columns: table => new
                 {
                     ClienteId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(maxLength: 50, nullable: true),
                     Email = table.Column<string>(maxLength: 80, nullable: true)
                 },
@@ -26,7 +27,7 @@ namespace MVCVendasApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(maxLength: 50, nullable: true),
                     Unidade = table.Column<string>(maxLength: 2, nullable: true),
                     Custo = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
@@ -44,7 +45,7 @@ namespace MVCVendasApp.Migrations
                 columns: table => new
                 {
                     VendaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DataDaVenda = table.Column<DateTime>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
                     DataPrevistaDaEntrega = table.Column<DateTime>(nullable: false),
@@ -66,10 +67,9 @@ namespace MVCVendasApp.Migrations
                 columns: table => new
                 {
                     VendaItensId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     VendaId = table.Column<int>(nullable: false),
                     ProdutoId = table.Column<int>(nullable: false),
-                    LivroId = table.Column<int>(nullable: true),
                     Quantidade = table.Column<int>(nullable: false),
                     ValorDeVenda = table.Column<decimal>(type: "decimal(12,2)", nullable: false)
                 },
@@ -77,11 +77,11 @@ namespace MVCVendasApp.Migrations
                 {
                     table.PrimaryKey("PK_VendaItens", x => x.VendaItensId);
                     table.ForeignKey(
-                        name: "FK_VendaItens_Produto_LivroId",
-                        column: x => x.LivroId,
+                        name: "FK_VendaItens_Produto_ProdutoId",
+                        column: x => x.ProdutoId,
                         principalTable: "Produto",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_VendaItens_Vendas_VendaId",
                         column: x => x.VendaId,
@@ -91,9 +91,9 @@ namespace MVCVendasApp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_VendaItens_LivroId",
+                name: "IX_VendaItens_ProdutoId",
                 table: "VendaItens",
-                column: "LivroId");
+                column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VendaItens_VendaId",
