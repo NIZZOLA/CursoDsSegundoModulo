@@ -27,8 +27,12 @@ namespace MVCVendasApp
         {
             services.AddControllersWithViews();
 
+            /*
             services.AddDbContext<MVCVendasAppContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MVCVendasAppContext")));
+            */
+            services.AddDbContext<MVCVendasAppContext>(options =>
+             options.UseMySql(Configuration.GetConnectionString("MVCVendasAppContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

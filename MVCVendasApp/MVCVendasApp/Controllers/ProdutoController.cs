@@ -25,6 +25,12 @@ namespace MVCVendasApp.Controllers
             return View(await _context.ProdutoModel.ToListAsync());
         }
 
+        // GET: Produto
+        public async Task<IActionResult> Index2()
+        {
+            return View(await _context.ProdutoModel.ToListAsync());
+        }
+
         // GET: Produto/Details/5
         public async Task<IActionResult> Details(int? id)
         {

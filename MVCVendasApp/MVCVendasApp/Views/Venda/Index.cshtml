@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<MVCVendasApp.Models.VendaModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Listagem de Vendas";
 }
 
-<h1>Index</h1>
+<h1>Listagem de Vendas</h1>
 
 <p>
-    <a asp-action="Create">Criar venda</a>
+    <a asp-action="Create" class="fa fa-plus-square">Criar venda</a>
 </p>
 <table class="table">
     <thead>
@@ -24,29 +24,35 @@
             <th>
                 @Html.DisplayNameFor(model => model.CodigoDoRastreamento)
             </th>
+            <th>
+                Total R$
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var venda in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DataDaVenda)
+                @Html.DisplayFor(modelItem => venda.DataDaVenda)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                @Html.DisplayFor(modelItem => venda.Cliente.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DataPrevistaDaEntrega)
+                @Html.DisplayFor(modelItem => venda.DataPrevistaDaEntrega)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CodigoDoRastreamento)
+                @Html.DisplayFor(modelItem => venda.CodigoDoRastreamento)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.VendaId">Edit</a> |
-                <a asp-action="Index" asp-route-id="@item.VendaId">Itens</a> |
-                <a asp-action="Details" asp-route-id="@item.VendaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.VendaId">Delete</a>
+                @(  venda.Itens.Sum(a => a.Quantidade * a.ValorDeVenda).ToString("###,##0.00") )
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@venda.VendaId" title="Detalhes"><i class="fa fa-list"></i></a> |
+                <a asp-action="Edit" asp-route-id="@venda.VendaId" title="Editar"><i class="fa fa-edit"></i></a> |
+                <a asp-action="Delete" asp-route-id="@venda.VendaId" title="Excluir"><i class="fa fa-trash-o"></i></a> |
+                <a asp-action="Print" asp-route-id="@venda.VendaId" alt="Imprimir" title="Imprimir" target="_blank"><i class="fa fa-print"></i></a>
             </td>
         </tr>
 }

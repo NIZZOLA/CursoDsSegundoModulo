@@ -1,37 +1,38 @@
 ﻿@model MVCVendasApp.Models.VendaModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Impressão da venda";
+    Layout = null;
 }
 
-<h1>Detalhes da Venda</h1>
+<h1>Impressão da Venda</h1>
 
 <div>
     <h4></h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DataDaVenda)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DataDaVenda)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cliente)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Cliente.ClienteId) - @Html.DisplayFor(model => model.Cliente.Nome)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DataPrevistaDaEntrega)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DataPrevistaDaEntrega)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CodigoDoRastreamento)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CodigoDoRastreamento)
         </dd>
     </dl>
@@ -39,7 +40,6 @@
     <div class="row">
         <table class="table">
 
-            <a href="/VendaItens/Create/@Model.VendaId" value="Incluir" class="btn btn-primary" />Incluir <i class="fa fa-plus-square"></i></a>
 
             <thead>
                 <tr>
@@ -87,34 +87,25 @@
                         <td>
                             @(item.Quantidade * item.ValorDeVenda)
                         </td>
-                        <td>
-                            <a asp-controller="VendaItens" asp-action="Edit" asp-route-id="@item.VendaItensId">Editar</a> |
-                            <!--    <a asp-action="Details" asp-route-id="@item.VendaItensId">Details</a> |-->
-                            <a asp-controller="VendaItens" asp-action="Delete" asp-route-id="@item.VendaItensId">Excluir</a>
-                        </td>
                     </tr>
                 }
-            
-            
-                <th>
-                    <td colspan="5">
-                        Total da venda
-                    </td>
-                    <td>
-                        @Model.Itens.Sum(a => a.ValorDeVenda * a.Quantidade)
-                    </td>
-                </th>
 
-            
-            
+
+            <tr>
+                <td colspan="4">
+                    Total da venda
+                </td>
+                <td>
+                    @Model.Itens.Sum(a => a.ValorDeVenda * a.Quantidade)
+                </td>
+            </tr>
+
+
+
             </tbody>
         </table>
 
 
     </div>
 
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.VendaId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>
