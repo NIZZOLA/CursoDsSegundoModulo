@@ -22,7 +22,7 @@ namespace MVCVendasApp.Controllers
         // GET: Venda
         public async Task<IActionResult> Index()
         {
-            var mVCVendasAppContext = _context.VendaModel.Include(v => v.Cliente);
+            var mVCVendasAppContext = _context.VendaModel.Include(v => v.Cliente).Include(e => e.Itens);
             return View(await mVCVendasAppContext.ToListAsync());
         }
 
@@ -165,6 +165,31 @@ namespace MVCVendasApp.Controllers
         private bool VendaModelExists(int id)
         {
             return _context.VendaModel.Any(e => e.VendaId == id);
+        }
+
+        // GET: Venda/Print/5
+        public async Task<IActionResult> Print(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vendaModel = await _context.VendaModel
+                .Include(v => v.Cliente)
+                .FirstOrDefaultAsync(m => m.VendaId == id);
+
+            vendaModel.Itens = await _context.VendaItensModel.
+                                                Include(v => v.Produto)
+                                                .Where(b => b.VendaId == id)
+                                                .ToListAsync();
+
+            if (vendaModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(vendaModel);
         }
     }
 }

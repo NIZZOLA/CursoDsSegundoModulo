@@ -65,8 +65,9 @@ namespace MVCVendasApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if( ! ValidaEstoque(vendaItensModel) )
+                if( ! ValidaEstoque(vendaItensModel.ProdutoId, vendaItensModel.Quantidade) )
                 {
+                    ModelState.AddModelError(string.Empty, "Estoque não disponível para este produto " );
                     return View(vendaItensModel);
                 }
 
@@ -79,13 +80,13 @@ namespace MVCVendasApp.Controllers
             return View(vendaItensModel);
         }
 
-        public bool ValidaEstoque(VendaItensModel model )
+        public bool ValidaEstoque(int produtoId , int quantidade )
         {
-            var produto = _context.ProdutoModel.Find(model.ProdutoId);
+            var produto = _context.ProdutoModel.Find(produtoId);
             if (produto == null)
                 return false;
 
-            if (produto.Estoque < model.Quantidade)
+            if (produto.Estoque < quantidade)
                 return false;
 
             return true;
@@ -112,15 +113,23 @@ namespace MVCVendasApp.Controllers
             {
                 return NotFound();
             }
-
             var vendaItensModel = await _context.VendaItensModel.FindAsync(id);
             if (vendaItensModel == null)
             {
                 return NotFound();
             }
-            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
-            ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
+
+            MontaViewBagsEdicao(vendaItensModel.ProdutoId);
+
+            //ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
+            //ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
             return View(vendaItensModel);
+        }
+
+        private void MontaViewBagsEdicao(int produtoId)
+        {
+            var prod = _context.ProdutoModel.Where(prod => prod.Id == produtoId).FirstOrDefault();
+            ViewData["ProdutoDescricao"] = prod.Descricao;
         }
 
         // POST: VendaItens/Edit/5
@@ -141,7 +150,16 @@ namespace MVCVendasApp.Controllers
                 {
                     var anterior = _context.VendaItensModel.Find(vendaItensModel.VendaItensId);
                     var diferenca =  vendaItensModel.Quantidade - anterior.Quantidade;
-                    
+                    if( diferenca > 0 )
+                    {
+                        if (!ValidaEstoque(vendaItensModel.ProdutoId, diferenca))
+                        {
+                            ModelState.AddModelError(string.Empty, "Estoque não disponível para este produto ");
+                            MontaViewBagsEdicao(vendaItensModel.ProdutoId);
+                            return View(vendaItensModel);
+                        }
+                    }
+
                     BaixarEstoque(vendaItensModel.ProdutoId, diferenca);
 
                     anterior.Quantidade = vendaItensModel.Quantidade;
@@ -161,10 +179,12 @@ namespace MVCVendasApp.Controllers
                         throw;
                     }
                 }
+                
                 return RedirectToAction("Details", "Venda", new { id = vendaItensModel.VendaId });
             }
-            ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
-            ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
+
+            //ViewData["ProdutoId"] = new SelectList(_context.ProdutoModel, "Id", "Id", vendaItensModel.ProdutoId);
+            ///ViewData["VendaId"] = new SelectList(_context.VendaModel, "VendaId", "VendaId", vendaItensModel.VendaId);
             return View(vendaItensModel);
         }
 
