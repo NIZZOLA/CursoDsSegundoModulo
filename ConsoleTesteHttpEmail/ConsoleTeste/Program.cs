@@ -26,7 +26,7 @@ namespace ConsoleTeste
 
 
             var resposta2 = Funcoes.SendMail("marcionizzola@gmail.com", "Prof Nizzola", "marcio.nizzola@etec.sp.gov.br", "Nizzola Prof", "marcionizzola@gmail.com",
-                  "Jedi#76#", "smtp.gmail.com", true, "E-MAIL TESTE DA AULA", "O Palmeiras não tem mundial!");
+                  "", "smtp.gmail.com", true, "E-MAIL TESTE DA AULA", "O Palmeiras não tem mundial!");
 
             if (resposta2)
                 Console.WriteLine("Sucesso no envio!");
